@@ -1,0 +1,16 @@
+name: tracer
+version: 0.1.0
+
+authors:
+  - daumiller <darcy.aumiller@gmail.com>
+
+targets:
+  tracer:
+    main: source/main.cr
+
+crystal: 1.4.1
+
+license: BSD 2-Clause
+
+dependencies:
+
