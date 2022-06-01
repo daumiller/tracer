@@ -10,10 +10,6 @@ module Tracer
       @pixels = Array.new(@width * @height) { color }
     end
 
-    def position(x : UInt32, y : UInt32) : UInt32
-      (y * @width) + x
-    end
-
     def set(x : UInt32, y : UInt32, color : UInt32) : Void
       @pixels[(y * @width) + x] = color
     end
