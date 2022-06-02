@@ -344,4 +344,133 @@ describe Tracer::Matrix do
       (m4a_im == m4a).should be_true
     end
   end
+
+  describe "translations" do
+    it "can translate a point" do
+      pt_origin = Tracer::Point.new -3.0, 4.0, 5.0
+      pt_xlated = Tracer::M4x4.translation(5.0, -3.0, 2.0) * pt_origin
+      (pt_xlated == Tracer::Point.new(2.0, 1.0, 7.0)).should be_true
+    end
+
+    it "can untranslate a point" do
+      pt_origin   = Tracer::Point.new -3.0, 4.0, 5.0
+      translation = Tracer::M4x4.translation 5.0, -3.0, 2.0
+      untranslate = translation.inverse
+      pt_xlated   = translation * pt_origin
+      pt_unxlated = untranslate * pt_xlated
+      (pt_origin == pt_unxlated).should be_true
+    end
+
+    it "doesn't translate vectors" do
+      v_origin = Tracer::Vector.new -3.0, 4.0, 5.0
+      xlation  = Tracer::M4x4.translation 5.0, -3.0, 2.0
+      v_xlated = xlation * v_origin
+      (v_xlated == v_origin).should be_true
+    end
+  end
+
+  describe "scaling" do
+    it "scales points" do
+      scale = Tracer::M4x4.scale 2.0, 3.0, 4.0
+      point = Tracer::Point.new -4.0, 6.0, 8.0
+      scaled = scale * point
+      (scaled == Tracer::Point.new(-8.0, 18.0, 32.0)).should be_true
+    end
+
+    it "scales vectors" do
+      scale = Tracer::M4x4.scale 2.0, 3.0, 4.0
+      vectr = Tracer::Vector.new -4.0, 6.0, 8.0
+      scaled = scale * vectr
+      (scaled == Tracer::Vector.new(-8.0, 18.0, 32.0)).should be_true
+    end
+
+    it "can uniformly scale" do
+      scale = Tracer::M4x4.scale 3.0
+      vectr = Tracer::Vector.new -4.0, 6.0, 8.0
+      scaled = scale * vectr
+      (scaled == Tracer::Vector.new(-12.0, 18.0, 24.0)).should be_true
+    end
+
+    it "can scale by an inverse" do
+      scale = Tracer::M4x4.scale 2.0, 3.0, 4.0
+      invscale = scale.inverse # -> scale(1/2, 1/3, 1/4)
+      vect_orig = Tracer::Vector.new -4.0, 6.0, 8.0
+      ((invscale * vect_orig) == Tracer::Vector.new(-2.0, 2.0, 2.0)).should be_true
+    end
+  end
+
+  describe "rotations" do
+    it "rotates on x axis" do
+      point     = Tracer::Point.new 0.0, 1.0, 0.0
+      eighth_x  = Tracer::M4x4.rotation_x Math::TAU / 8.0
+      quarter_x = Tracer::M4x4.rotation_x Math::TAU / 4.0
+      ((eighth_x  * point) == Tracer::Point.new(0.0, Math.sqrt(2.0)/2.0, Math.sqrt(2.0)/2.0)).should be_true
+      ((quarter_x * point) == Tracer::Point.new(0.0, 0.0, 1.0)).should be_true
+    end
+
+    it "rotates on y axis" do
+      point     = Tracer::Point.new 0.0, 0.0, 1.0
+      eighth_y  = Tracer::M4x4.rotation_y Math::TAU / 8.0
+      quarter_y = Tracer::M4x4.rotation_y Math::TAU / 4.0
+      ((eighth_y  * point) == Tracer::Point.new(Math.sqrt(2.0)/2.0, 0.0, Math.sqrt(2.0)/2.0)).should be_true
+      ((quarter_y * point) == Tracer::Point.new(1.0, 0.0, 0.0)).should be_true
+    end
+
+    it "rotates on z axis" do
+      point     = Tracer::Point.new 0.0, 1.0, 0.0
+      eighth_z  = Tracer::M4x4.rotation_z Math::TAU / 8.0
+      quarter_z = Tracer::M4x4.rotation_z Math::TAU / 4.0
+      ((eighth_z  * point) == Tracer::Point.new(-Math.sqrt(2.0)/2.0, Math.sqrt(2.0)/2.0, 0.0)).should be_true
+      ((quarter_z * point) == Tracer::Point.new(-1.0, 0.0, 0.0)).should be_true
+    end
+  end
+
+  describe "shearing" do
+    it "shears correctly" do
+      point = Tracer::Point.new 2.0, 3.0, 4.0
+
+      shear = Tracer::M4x4.shear 1.0, 0.0, 0.0, 0.0, 0.0, 0.0
+      ((shear * point) == Tracer::Point.new(5.0, 3.0, 4.0)).should be_true
+
+      shear = Tracer::M4x4.shear 0.0, 1.0, 0.0, 0.0, 0.0, 0.0
+      ((shear * point) == Tracer::Point.new(6.0, 3.0, 4.0)).should be_true
+
+      shear = Tracer::M4x4.shear 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
+      ((shear * point) == Tracer::Point.new(2.0, 5.0, 4.0)).should be_true
+
+      shear = Tracer::M4x4.shear 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+      ((shear * point) == Tracer::Point.new(2.0, 7.0, 4.0)).should be_true
+
+      shear = Tracer::M4x4.shear 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+      ((shear * point) == Tracer::Point.new(2.0, 3.0, 6.0)).should be_true
+
+      shear = Tracer::M4x4.shear 0.0, 0.0, 0.0, 0.0, 0.0, 1.0
+      ((shear * point) == Tracer::Point.new(2.0, 3.0, 7.0)).should be_true
+    end
+  end
+
+  describe "chained transformations" do
+    it "chaining test" do
+      point       = Tracer::Point.new 1.0, 0.0, 1.0
+      rotation    = Tracer::M4x4.rotation_x Math::TAU / 4.0
+      scale       = Tracer::M4x4.scale 5.0
+      translation = Tracer::M4x4.translation 10.0, 5.0, 7.0
+
+      p2 = rotation * point
+      (p2 == Tracer::Point.new(1.0, -1.0, 0.0)).should be_true
+
+      p3 = scale * p2
+      (p3 == Tracer::Point.new(5.0, -5.0, 0.0)).should be_true
+
+      p4 = translation * p3
+      (p4 == Tracer::Point.new(15.0, 0.0, 7.0)).should be_true
+
+      # when combining AOT, must be in reverse order
+      px = (translation * scale * rotation) * point
+      (px == p4).should be_true
+
+      perr = (rotation * scale * translation) * point
+      (perr == p4).should be_false
+    end
+  end
 end

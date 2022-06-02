@@ -292,5 +292,43 @@ module Tracer
     def self.zero() : M4x4
       M4x4.new({ 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 0.0 })
     end
+
+    def self.translation(x : Float64, y : Float64, z : Float64) : M4x4
+      M4x4.new({ 1.0, 0.0, 0.0, x }, { 0.0, 1.0, 0.0, y }, { 0.0, 0.0, 1.0, z }, { 0.0, 0.0, 0.0, 1.0 })
+    end
+    def self.translation(v : V4) : M4x4
+      self.translation(v[0], v[1], v[2])
+    end
+
+    def self.scale(x : Float64, y : Float64, z : Float64)
+      M4x4.new({ x, 0.0, 0.0, 0.0 }, { 0.0, y, 0.0, 0.0 }, { 0.0, 0.0, z, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
+    end
+    def self.scale(scale : Float64)
+      self.scale scale, scale, scale
+    end
+
+    # all rotations are only around the origin point (0,0,0)
+
+    def self.rotation_x(radians : Float64) : M4x4
+      cosine = Math.cos(radians)
+      sine   = Math.sin(radians)
+      M4x4.new({ 1.0, 0.0, 0.0, 0.0 }, { 0.0, cosine, -sine, 0.0 }, { 0.0, sine, cosine, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
+    end
+
+    def self.rotation_y(radians : Float64) : M4x4
+      cosine = Math.cos(radians)
+      sine   = Math.sin(radians)
+      M4x4.new({ cosine, 0.0, sine, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { -sine, 0.0, cosine, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
+    end
+
+    def self.rotation_z(radians : Float64) : M4x4
+      cosine = Math.cos(radians)
+      sine   = Math.sin(radians)
+      M4x4.new({ cosine, -sine, 0.0, 0.0 }, { sine, cosine, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
+    end
+
+    def self.shear(xy : Float64, xz : Float64, yx : Float64, yz : Float64, zx : Float64, zy : Float64) : M4x4
+      M4x4.new({ 1.0, xy, xz, 0.0 }, { yx, 1.0, yz, 0.0 }, { zx, zy, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
+    end
   end
 end

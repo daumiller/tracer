@@ -78,6 +78,10 @@ module Tracer
       @z /= mag
       @w /= mag
     end
+
+    def to_s() : String
+      "(#{@x}, #{@y}, #{@z}, #{@w})"
+    end
   end
 
   class Point < V4
