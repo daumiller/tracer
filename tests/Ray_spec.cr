@@ -53,6 +53,21 @@ describe Ray do
       xs[1].distance.should be_close(-4.0, EPSILON)
     end
 
+    it "intersects spheres with transforms" do
+      ray = Ray.new(Point.new(0.0, 0.0, -5.0), Vector.new(0.0, 0.0, 1.0))
+      sphere = Sphere.new M4x4.scale(2.0, 2.0, 2.0)
+      xs = ray.intersections sphere
+      xs.size.should eq(2)
+      xs[0].distance.should be_close(3.0, EPSILON)
+      xs[1].distance.should be_close(7.0, EPSILON)
+      xs[0].solid.should be(sphere)
+      xs[1].solid.should be(sphere)
+  
+      sphere.transform = M4x4.translation 5.0, 0.0, 0.0
+      xs = ray.intersections sphere
+      xs.size.should eq(0)
+    end
+
     # not actually part of Ray; but, whatevs...
     it "chooses hit from intersections" do
       sphere = Sphere.new
@@ -73,6 +88,20 @@ describe Ray do
         Intersection.new( 4.3, sphere),
       ]
       Intersection.hit(inters).should be(inters[3])
+    end
+  end
+
+  describe "Transformations" do
+    it "can be transformed" do
+      r = Ray.new Point.new(1.0, 2.0, 3.0), Vector.new(0.0, 1.0, 0.0)
+      m = M4x4.translation 3.0, 4.0, 5.0
+      r2 = r.transform m
+      (r2.origin    == Point.new( 4.0, 6.0, 8.0)).should be_true
+      (r2.direction == Vector.new(0.0, 1.0, 0.0)).should be_true
+
+      r2 = r.transform M4x4.scale(2.0, 3.0, 4.0)
+      (r2.origin    == Point.new( 2.0, 6.0, 12.0)).should be_true
+      (r2.direction == Vector.new(0.0, 3.0,  0.0)).should be_true
     end
   end
 end
