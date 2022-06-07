@@ -10,7 +10,7 @@ targets:
 
 crystal: 1.4.1
 
-license: BSD 2-Clause
+license: GPL3
 
 dependencies:
 

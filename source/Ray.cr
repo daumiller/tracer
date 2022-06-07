@@ -8,8 +8,7 @@ module Tracer
     property origin : V4
     property direction : V4
 
-    def initialize(@origin : V4, direction : V4)
-      @direction = direction.normalize
+    def initialize(@origin : V4, @direction : V4)
     end
 
     def position(distance : Float64) : V4
