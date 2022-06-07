@@ -1,3 +1,4 @@
+require "./Material"
 require "./Matrices"
 
 module Tracer
@@ -5,6 +6,7 @@ module Tracer
     @transform                   : M4x4
     @transform_inverse           : M4x4
     @transform_inverse_transpose : M4x4
+    property material : Material = Material.new
 
     def initialize()
       @transform                   = M4x4.identity
@@ -14,6 +16,20 @@ module Tracer
     def initialize(@transform : M4x4)
       @transform_inverse           = @transform.inverse
       @transform_inverse_transpose = @transform_inverse.transpose
+      @material                    = Material.new
+    end
+    def initialize(@material : Material)
+      @transform                   = M4x4.identity
+      @transform_inverse           = @transform.inverse
+      @transform_inverse_transpose = @transform_inverse.transpose
+    end
+    def initialize(@transform : M4x4, @material : Material)
+      @transform_inverse           = @transform.inverse
+      @transform_inverse_transpose = @transform_inverse.transpose
+    end
+
+    def normal_at(world_point : V4) : V4
+      return V4.new 0.0, 0.0, 0.0, 0.0
     end
 
     def transform : M4x4

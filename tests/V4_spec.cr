@@ -1,6 +1,6 @@
 # crystal spec tests/V4_spec.cr -v --error-trace
 require "spec"
-require "../source/main"
+require "../source/Tracer"
 
 describe Tracer::V4 do
   describe "base initializer" do
@@ -131,7 +131,18 @@ describe Tracer::V4 do
       clr3.r.should be_close(0.90, Tracer::EPSILON)
       clr3.g.should be_close(0.20, Tracer::EPSILON)
       clr3.b.should be_close(0.04, Tracer::EPSILON)
-      clr3.a.should be_close(1.00, Tracer::EPSILON)
+    end
+
+    it "reflects" do
+      v = Tracer::Vector.new 1.0, -1.0, 0.0
+      n = Tracer::Vector.new 0.0, 1.0, 0.0
+      r = v.reflect n
+      (r == Tracer::Vector.new(1.0, 1.0, 0.0)).should be_true
+
+      v = Tracer::Vector.new 0.0, -1.0, 0.0
+      n = Tracer::Vector.new Math.sqrt(2.0)/2.0, Math.sqrt(2.0)/2.0, 0.0
+      r = v.reflect n
+      (r == Tracer::Vector.new(1.0, 0.0, 0.0)).should be_true
     end
   end
 end

@@ -1,6 +1,6 @@
-# crystal spec tests/Canvas_spec.cr -v --error-trace
+# crystal spec tests/Canvas_spec.cr -v --error-trace --link-flags $(pwd)/stb_image_write.a
 require "spec"
-require "../source/main"
+require "../source/Tracer"
 
 describe Tracer::Canvas do
   it "initializer" do
@@ -16,7 +16,7 @@ describe Tracer::Canvas do
 
   it "get/set pixels" do
     cnv = Tracer::Canvas.new 128, 128
-    background = Tracer::Color.new 0.0, 0.0, 0.0, 0.0
+    background = Tracer::Color.new 0.0, 0.0, 0.0
     pen_color  = Tracer::Color.new 0.0, 0.0, 0.8
     
     got_color = Tracer::Color.new(cnv.get(0,0))

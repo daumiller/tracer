@@ -1,6 +1,6 @@
-# crystal spec tests/Ray_spec.cr -v --error-trace --link-flags $(pwd)/stb_image_write.a
+# crystal spec tests/Ray_spec.cr -v --error-trace
 require "spec"
-require "../source/main"
+require "../source/Tracer"
 include Tracer
 
 describe Ray do

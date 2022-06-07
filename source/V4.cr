@@ -88,72 +88,28 @@ module Tracer
     def initialize(@x : Float64, @y : Float64, @z : Float64)
       @w = 1.0
     end
+
+    def self.from(v4 : V4) : Point
+      point = Point.new v4.x, v4.y, v4.z
+      point.w = v4.w
+      point
+    end
   end
 
   class Vector < V4
     def initialize(@x : Float64, @y : Float64, @z : Float64)
       @w = 0.0
     end
-  end
 
-  class Color < V4
-    # ABGR -> #AABBGGRR
-    def initialize(r : Float64, g : Float64, b : Float64, a : Float64 = 1.0)
-      @x = a
-      @y = b
-      @z = g
-      @w = r
+    def reflect(reflect_around : Vector) : Vector
+      v4 = self - (reflect_around * 2.0 * self.dot(reflect_around))
+      Vector.new v4.x, v4.y, v4.z
     end
 
-    def initialize(color : UInt32)
-      @x = ((color >> 24) & 0xFF) / 255.0
-      @y = ((color >> 16) & 0xFF) / 255.0
-      @z = ((color >>  8) & 0xFF) / 255.0
-      @w = ((color >>  0) & 0xFF) / 255.0
-    end
-
-    def r
-      @w
-    end
-    def r=(@w)
-    end
-
-    def g
-      @z
-    end
-    def g=(@z)
-    end
-
-    def b
-      @y
-    end
-    def b=(@y)
-    end
-
-    def a
-      @x
-    end
-    def a=(@x)
-    end
-
-    def to_u32
-      ua : UInt32 = ((@x * 255.0).to_u32 & 0xFF) << 24
-      ub : UInt32 = ((@y * 255.0).to_u32 & 0xFF) << 16
-      ug : UInt32 = ((@z * 255.0).to_u32 & 0xFF) <<  8
-      ur : UInt32 = ((@w * 255.0).to_u32 & 0xFF) <<  0
-      ua | ub | ug | ur
-    end
-
-    def blend(other : Color) : Color
-      Color.new self.r*other.r, self.g*other.g, self.b*other.b, self.a*other.a
-    end
-
-    def ==(other : Color) : Bool
-      return false unless Tracer.feq(self.r, other.r, Tracer::EPSILON_COLORS)
-      return false unless Tracer.feq(self.g, other.g, Tracer::EPSILON_COLORS)
-      return false unless Tracer.feq(self.b, other.b, Tracer::EPSILON_COLORS)
-      return false unless Tracer.feq(self.a, other.a, Tracer::EPSILON_COLORS)
-      true
+    def self.from(v4 : V4) : Vector
+      vector = Vector.new v4.x, v4.y, v4.z
+      vector.w = v4.w
+      vector
     end
   end
 end

@@ -4,6 +4,17 @@ require "../source/Tracer"
 include Tracer
 
 describe Sphere do
+  describe "Initializer" do
+    it "has default values" do
+      s = Sphere.new
+      (s.material.color == Color.new(1.0, 1.0, 1.0)).should be_true
+      s.material.ambient.should be_close(0.1, EPSILON)
+      s.material.diffuse.should be_close(0.9, EPSILON)
+      s.material.specular.should be_close(0.9, EPSILON)
+      s.material.shininess.should be_close(200.0, EPSILON)
+    end
+  end
+
   describe "Normals" do
     it "computes basic normals" do
       s = Sphere.new

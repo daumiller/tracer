@@ -1,6 +1,6 @@
 # crystal spec tests/Matrices_spec.cr -v --error-trace
 require "spec"
-require "../source/main"
+require "../source/Tracer"
 
 describe Tracer::Matrix do
   describe "constructors" do

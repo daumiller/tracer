@@ -8,6 +8,9 @@ module Tracer
   end
 end
 
+require "./Color"
+require "./Light"
+require "./Material"
 require "./Solid"
 require "./Sphere"
 require "./Intersection"
@@ -15,3 +18,4 @@ require "./V4"
 require "./Matrices"
 require "./Ray"
 require "./Canvas"
+require "./Phong"
