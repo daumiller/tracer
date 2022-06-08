@@ -476,7 +476,7 @@ describe Tracer::Matrix do
 
   describe "view transformations" do
     it "returns the default view transformation" do
-      t = Tracer::M4x4.viewTransform(
+      t = Tracer::M4x4.view_transform(
         Tracer::Point.new(0.0, 0.0, 0.0),
         Tracer::Point.new(0.0, 0.0, -1.0),
         Tracer::Vector.new(0.0, 1.0, 0.0)
@@ -485,7 +485,7 @@ describe Tracer::Matrix do
     end
 
     it "returns view transform in positive z" do
-      t = Tracer::M4x4.viewTransform(
+      t = Tracer::M4x4.view_transform(
         Tracer::Point.new(0.0, 0.0, 0.0),
         Tracer::Point.new(0.0, 0.0, 1.0),
         Tracer::Vector.new(0.0, 1.0, 0.0)
@@ -494,7 +494,7 @@ describe Tracer::Matrix do
     end
 
     it "returns translated view transform" do
-      t = Tracer::M4x4.viewTransform(
+      t = Tracer::M4x4.view_transform(
         Tracer::Point.new(0.0, 0.0, 8.0),
         Tracer::Point.new(0.0, 0.0, 0.0),
         Tracer::Vector.new(0.0, 1.0, 0.0)
@@ -503,7 +503,7 @@ describe Tracer::Matrix do
     end
 
     it "returns an arbitrary view transform" do
-      t = Tracer::M4x4.viewTransform(
+      t = Tracer::M4x4.view_transform(
         Tracer::Point.new(1.0, 3.0, 2.0),
         Tracer::Point.new(4.0, -2.0, 8.0),
         Tracer::Vector.new(1.0, 1.0, 0.0)

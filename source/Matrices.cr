@@ -331,7 +331,7 @@ module Tracer
       M4x4.new({ 1.0, xy, xz, 0.0 }, { yx, 1.0, yz, 0.0 }, { zx, zy, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
     end
 
-    def self.viewTransform(from : Point, to : Point, up : Vector) : M4x4
+    def self.view_transform(from : Point, to : Point, up : Vector) : M4x4
       forward   : Vector = Vector.from((to - from).normalize)
       up_normal : Vector = Vector.from(up.normalize)
       left      : Vector = Vector.from(forward.cross(up_normal))

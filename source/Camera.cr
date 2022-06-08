@@ -59,6 +59,17 @@ module Tracer
       @half_height = pixel_sizes[2]
     end
 
+    def transform=(@transform)
+      @transform_inverse = @transform.inverse
+    end
+
+    def fov=(@fov)
+      pixel_sizes = Camera.pixel_sizes(@width, @height, @fov)
+      @pixel_size  = pixel_sizes[0]
+      @half_width  = pixel_sizes[1]
+      @half_height = pixel_sizes[2]
+    end
+
     def ray_for_pixel(x : UInt32, y : UInt32) : Ray
       x_offset = (x.to_f64 + 0.5) * @pixel_size
       y_offset = (y.to_f64 + 0.5) * @pixel_size
