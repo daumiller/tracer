@@ -330,5 +330,21 @@ module Tracer
     def self.shear(xy : Float64, xz : Float64, yx : Float64, yz : Float64, zx : Float64, zy : Float64) : M4x4
       M4x4.new({ 1.0, xy, xz, 0.0 }, { yx, 1.0, yz, 0.0 }, { zx, zy, 1.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 })
     end
+
+    def self.viewTransform(from : Point, to : Point, up : Vector) : M4x4
+      forward   : Vector = Vector.from((to - from).normalize)
+      up_normal : Vector = Vector.from(up.normalize)
+      left      : Vector = Vector.from(forward.cross(up_normal))
+      true_up   : Vector = Vector.from(left.cross(forward))
+
+      orientation = M4x4.new(
+        {     left.x,     left.y,     left.z, 0.0 },
+        {  true_up.x,  true_up.y,  true_up.z, 0.0 },
+        { -forward.x, -forward.y, -forward.z, 0.0 },
+        {        0.0,        0.0,        0.0, 1.0 }
+      )
+
+      orientation * M4x4.translation(-from.x, -from.y, -from.z)
+    end
   end
 end

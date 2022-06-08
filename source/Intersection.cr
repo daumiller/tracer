@@ -1,4 +1,7 @@
 require "./Solid"
+require "./Solid"
+require "./V4"
+require "./Ray"
 
 module Tracer
   class Intersection
@@ -22,6 +25,30 @@ module Tracer
 
       return nil unless (lowest_nn_idx > -1)
       return intersections[lowest_nn_idx]
+    end
+  end
+
+  class RayIntersection
+    property distance : Float64
+    property solid    : Solid
+    property position : Point
+    property eye_v    : Vector
+    property normal_v : Vector
+    property inside   : Bool
+
+    def initialize(intersection : Intersection, ray : Ray)
+      @distance = intersection.distance
+      @solid    = intersection.solid
+      @position = Point.from(ray.position(@distance))
+      @eye_v    = Vector.from(-ray.direction)
+      @normal_v = Vector.from(@solid.normal_at(@position))
+
+      if @normal_v.dot(@eye_v) < 0
+        @inside = true
+        @normal_v = Vector.from(-@normal_v)
+      else
+        @inside = false
+      end
     end
   end
 end

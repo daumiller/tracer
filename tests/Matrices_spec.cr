@@ -473,4 +473,48 @@ describe Tracer::Matrix do
       (perr == p4).should be_false
     end
   end
+
+  describe "view transformations" do
+    it "returns the default view transformation" do
+      t = Tracer::M4x4.viewTransform(
+        Tracer::Point.new(0.0, 0.0, 0.0),
+        Tracer::Point.new(0.0, 0.0, -1.0),
+        Tracer::Vector.new(0.0, 1.0, 0.0)
+      )
+      (t == Tracer::M4x4.identity).should be_true
+    end
+
+    it "returns view transform in positive z" do
+      t = Tracer::M4x4.viewTransform(
+        Tracer::Point.new(0.0, 0.0, 0.0),
+        Tracer::Point.new(0.0, 0.0, 1.0),
+        Tracer::Vector.new(0.0, 1.0, 0.0)
+      )
+      (t == Tracer::M4x4.scale(-1.0, 1.0, -1.0)).should be_true
+    end
+
+    it "returns translated view transform" do
+      t = Tracer::M4x4.viewTransform(
+        Tracer::Point.new(0.0, 0.0, 8.0),
+        Tracer::Point.new(0.0, 0.0, 0.0),
+        Tracer::Vector.new(0.0, 1.0, 0.0)
+      )
+      (t == Tracer::M4x4.translation(0.0, 0.0, -8.0)).should be_true
+    end
+
+    it "returns an arbitrary view transform" do
+      t = Tracer::M4x4.viewTransform(
+        Tracer::Point.new(1.0, 3.0, 2.0),
+        Tracer::Point.new(4.0, -2.0, 8.0),
+        Tracer::Vector.new(1.0, 1.0, 0.0)
+      )
+      compare = Tracer::M4x4.new(
+        { -0.50709, 0.50709,  0.67612, -2.36643 },
+        {  0.76772, 0.60609,  0.12122, -2.82843 },
+        { -0.35857, 0.59761, -0.71714,  0.00000 },
+        {  0.00000, 0.00000,  0.00000,  1.00000 },
+      )
+      (t == compare).should be_true
+    end
+  end
 end

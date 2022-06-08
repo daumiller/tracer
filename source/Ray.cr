@@ -15,7 +15,12 @@ module Tracer
       @origin + (@direction * distance)
     end
 
-    def intersections(sphere : Sphere) : Array(Intersection)
+    def intersections(solid : Solid) : Array(Intersection)
+      return intesections_sphere(solid) if solid.is_a? Sphere
+      [] of Intersection
+    end
+
+    def intesections_sphere(sphere : Solid) : Array(Intersection)
       hits = [] of Intersection
       tx_ray = self.transform sphere.transform_inverse
 

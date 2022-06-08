@@ -89,6 +89,26 @@ describe Ray do
       ]
       Intersection.hit(inters).should be(inters[3])
     end
+
+    it "precomputes intersections" do
+      r = Ray.new Point.new(0.0, 0.0, -5.0), Vector.new(0.0, 0.0, 1.0)
+      i = Intersection.new 4.0, Sphere.new
+      ri = RayIntersection.new i, r
+      ri.distance.should be_close(i.distance, EPSILON)
+      ri.solid.should be(i.solid)
+      (ri.position == Point.new(0.0, 0.0, -1.0)).should be_true
+      (ri.eye_v == Vector.new(0.0, 0.0, -1.0)).should be_true
+      (ri.normal_v == Vector.new(0.0, 0.0, -1.0)).should be_true
+      ri.inside.should be_false
+
+      r = Ray.new Point.new(0.0, 0.0, 0.0), Vector.new(0.0, 0.0, 1.0)
+      i = Intersection.new 1.0, Sphere.new
+      ri = RayIntersection.new i, r
+      (ri.position == Point.new(0.0, 0.0, 1.0)).should be_true
+      (ri.eye_v == Vector.new(0.0, 0.0, -1.0)).should be_true
+      (ri.normal_v == Vector.new(0.0, 0.0, -1.0)).should be_true
+      ri.inside.should be_true
+    end
   end
 
   describe "Transformations" do
