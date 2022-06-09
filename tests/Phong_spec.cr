@@ -56,5 +56,15 @@ describe "Phong" do
       result   = Tracer.phong material, light, position, eye_v, normal_v
       (result == Color.new(0.1, 0.1, 0.1)).should be_true
     end
+
+    it "returns ambient light when object in shadow" do
+      material = Material.new
+      position = Point.new 0.0, 0.0, 0.0
+      eye_v    = Vector.new 0.0, 0.0, -1.0
+      normal_v = Vector.new 0.0, 0.0, -1.0
+      light    = Light.new Point.new(0.0, 0.0, -10.0), Color.new(1.0, 1.0, 1.0)
+      result   = Tracer.phong material, light, position, eye_v, normal_v, true
+      (result == Color.new(0.1, 0.1, 0.1)).should be_true
+    end
   end
 end

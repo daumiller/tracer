@@ -29,19 +29,21 @@ module Tracer
   end
 
   class RayIntersection
-    property distance : Float64
-    property solid    : Solid
-    property position : Point
-    property eye_v    : Vector
-    property normal_v : Vector
-    property inside   : Bool
+    property distance  : Float64
+    property solid     : Solid
+    property position  : Point
+    property eye_v     : Vector
+    property normal_v  : Vector
+    property inside    : Bool
+    property pos_nudge : Point
 
     def initialize(intersection : Intersection, ray : Ray)
-      @distance = intersection.distance
-      @solid    = intersection.solid
-      @position = Point.from(ray.position(@distance))
-      @eye_v    = Vector.from(-ray.direction)
-      @normal_v = Vector.from(@solid.normal_at(@position))
+      @distance  = intersection.distance
+      @solid     = intersection.solid
+      @position  = Point.from(ray.position(@distance))
+      @eye_v     = Vector.from(-ray.direction)
+      @normal_v  = Vector.from(@solid.normal_at(@position))
+      @pos_nudge = Point.from(@position + (@normal_v * EPSILON))
 
       if @normal_v.dot(@eye_v) < 0
         @inside = true

@@ -66,7 +66,8 @@ describe World do
       i = Intersection.new 0.5, s
       ri = RayIntersection.new i, r
       c = w.phong_ray_intersection ri
-      (c == Color.new(0.90498, 0.90498, 0.90498)).should be_true
+      # (c == Color.new(0.90498, 0.90498, 0.90498)).should be_true # <- value before adding shadows
+      (c == (s.material.color * s.material.ambient)).should be_true # <- value after adding shadows
     end
   end
 
@@ -86,6 +87,32 @@ describe World do
       r = Ray.new Point.new(0.0, 0.0, 0.75), Vector.new(0.0, 0.0, -1.0)
       c = w.color_at r
       (c == w.solids[1].material.color).should be_true
+    end
+  end
+
+  describe "Points in Shadow" do
+    it "returns no shadow when nothing in path" do
+      w = testing_world
+      p = Point.new 0.0, 10.0, 0.0
+      w.in_shadow(p, w.lights[0]).should be_false
+    end
+
+    it "returns shadow when object between point and light" do
+      w = testing_world
+      p = Point.new 10.0, -10.0, 10.0
+      w.in_shadow(p, w.lights[0]).should be_true
+    end
+
+    it "returns no shadow when point \"behind\" light" do
+      w = testing_world
+      p = Point.new -20.0, 20.0, -20.0
+      w.in_shadow(p, w.lights[0]).should be_false
+    end
+
+    it "passes another shadow test" do
+      w = testing_world
+      p = Point.new -2.0, 2.0, -2.0
+      w.in_shadow(p, w.lights[0]).should be_false
     end
   end
 end

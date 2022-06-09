@@ -34,9 +34,25 @@ module Tracer
     def phong_ray_intersection(ri : RayIntersection) : Color
       color = Color.new 0.0, 0.0, 0.0
       @lights.each do |light|
-        color += Tracer.phong ri.solid.material, light, ri.position, ri.eye_v, ri.normal_v
+        in_shadow = self.in_shadow ri.pos_nudge, light
+        color += Tracer.phong ri.solid.material, light, ri.position, ri.eye_v, ri.normal_v, in_shadow
       end
       color
+    end
+
+    def in_shadow(position : Point, light : Light) : Bool
+      v = (light.position - position)
+      distance = v.magnitude
+      direction = Vector.from(v.normalize)
+      intersections = self.intersections Ray.new(position, direction)
+
+      intersections.each do |inter|
+        next if inter.distance < 0.0
+        break if inter.distance > distance
+        return true if inter.distance < distance
+      end
+
+      false
     end
 
     def color_at(ray : Ray) : Color

@@ -44,7 +44,8 @@ def build_scene : World
   solids = [floor, left_wall, right_wall, left_sphere, middle_sphere, right_sphere].map { |sphere| sphere.as(Solid) }
 
   light0 = Light.new Point.new(-10.0, 10.0, -10.0), Color.new(1.0, 1.0, 1.0)
-  lights = [ light0 ]
+  light1 = Light.new Point.new(  8.0,  6.0, -10.0), Color.new(0.25, 0.25, 0.25)
+  lights = [ light0, light1 ]
 
   World.new lights, solids
 end
