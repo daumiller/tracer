@@ -36,6 +36,7 @@ module Tracer
     property position  : Point
     property eye_v     : Vector
     property normal_v  : Vector
+    property reflect_v : Vector
     property inside    : Bool
     property pos_nudge : Point
 
@@ -46,6 +47,7 @@ module Tracer
       @position  = Point.from(ray.position(@distance))
       @eye_v     = Vector.from((-ray.direction).normalize)
       @normal_v  = Vector.from(@solid.normal_at(@position))
+      @reflect_v = Vector.from(Vector.from(ray.direction).reflect(@normal_v))
 
       # Basing nudge on normal_v, as suggested in-book,
       # results in Planes requiring a specific orientation, otherwise they'll always be in-shadow.

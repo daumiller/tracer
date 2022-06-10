@@ -11,8 +11,9 @@ def build_scene : World
   floor.texture_scale = 0.003
 
   wall_left = Plane.new M4x4.rotation_y(-Math::TAU/8.0) * M4x4.translation(0.0, 0.0, 5.0) * M4x4.rotation_x(Math::TAU/4.0) 
-  wall_left.material = Material.new Color.new(0.9, 1.0, 0.9)
+  wall_left.material = Material.new Color.new(0.35, 0.35, 0.35)
   wall_left.material.specular = 0.0
+  wall_left.material.reflectivity = 0.7
 
   wall_right = Plane.new M4x4.rotation_y( Math::TAU/8.0) * M4x4.translation(0.0, 0.0, 5.0) * M4x4.rotation_x(Math::TAU/4.0) 
   wall_right.material = Material.new Color.new(0.75, 0.75, 1.0)
@@ -25,6 +26,7 @@ def build_scene : World
   left_sphere.material.color    = Color.new(1.0, 0.8, 1.0)
   left_sphere.material.diffuse  = 0.7
   left_sphere.material.specular = 0.3
+  left_sphere.material.reflectivity = 0.2
 
   middle_sphere = Sphere.new
   middle_sphere.transform = M4x4.translation(-0.5, 1.0, 0.5)
@@ -37,6 +39,7 @@ def build_scene : World
   right_sphere.material.color    = Color.new(0.5, 1.0, 0.1)
   right_sphere.material.diffuse  = 0.7
   right_sphere.material.specular = 0.3
+  right_sphere.material.reflectivity = 0.2
 
   solids = [ floor, wall_left, wall_right, left_sphere, middle_sphere, right_sphere ].map { |solid| solid.as(Solid) }
 

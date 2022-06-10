@@ -56,7 +56,7 @@ describe World do
       s = testing_world.solids[0]
       i = Intersection.new 4.0, s
       ri = RayIntersection.new i, r
-      c = w.phong_ray_intersection ri
+      c = w.phong_ray_intersection ri, 0
       (c == Color.new(0.38066, 0.47583, 0.2855)).should be_true
 
       w = testing_world
@@ -65,7 +65,7 @@ describe World do
       s = w.solids[1]
       i = Intersection.new 0.5, s
       ri = RayIntersection.new i, r
-      c = w.phong_ray_intersection ri
+      c = w.phong_ray_intersection ri, 0
       (c == Color.new(0.90498, 0.90498, 0.90498)).should be_true
     end
   end

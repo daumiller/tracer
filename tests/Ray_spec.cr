@@ -109,6 +109,15 @@ describe Ray do
       (ri.normal_v == Vector.new(0.0, 0.0, -1.0)).should be_true
       ri.inside.should be_true
     end
+
+    it "computes reflection vectors" do
+      s = Plane.new
+      sq2 = Math.sqrt(2.0)
+      r = Ray.new Point.new(0.0, 1.0, -1.0), Vector.new(0.0, -sq2/2.0, sq2/2.0)
+      i = Intersection.new sq2, s
+      ri = RayIntersection.new i, r
+      (ri.reflect_v == Vector.new(0.0, sq2/2.0, sq2/2.0)).should be_true
+    end
   end
 
   describe "Transformations" do
