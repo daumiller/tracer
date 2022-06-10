@@ -11,7 +11,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, 0.0, -1.0
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 0.0, -10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v
       (result == Color.new(1.9, 1.9, 1.9)).should be_true
     end
 
@@ -22,7 +22,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, sq2ov2, -sq2ov2
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 0.0, -10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v
       (result == Color.new(1.0, 1.0, 1.0)).should be_true
     end
 
@@ -32,7 +32,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, 0.0, -1.0
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 10.0, -10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v
       (result == Color.new(0.7364, 0.7364, 0.7364)).should be_true
     end
 
@@ -43,7 +43,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, -sq2ov2, -sq2ov2
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 10.0, -10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v
       (result == Color.new(1.6364, 1.6364, 1.6364)).should be_true
     end
 
@@ -53,7 +53,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, 0.0, -1.0
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 0.0, 10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v
       (result == Color.new(0.1, 0.1, 0.1)).should be_true
     end
 
@@ -63,7 +63,7 @@ describe "Phong" do
       eye_v    = Vector.new 0.0, 0.0, -1.0
       normal_v = Vector.new 0.0, 0.0, -1.0
       light    = Light.new Point.new(0.0, 0.0, -10.0), Color.new(1.0, 1.0, 1.0)
-      result   = Tracer.phong material, light, position, eye_v, normal_v, true
+      result   = Tracer.phong material, nil, light, position, eye_v, normal_v, true
       (result == Color.new(0.1, 0.1, 0.1)).should be_true
     end
   end

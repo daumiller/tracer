@@ -6,7 +6,8 @@ module Tracer
     @transform                   : M4x4
     @transform_inverse           : M4x4
     @transform_inverse_transpose : M4x4
-    property material : Material = Material.new
+    property material : Material   = Material.new
+    property texture  : Canvas|Nil = nil
 
     def initialize()
       @transform                   = M4x4.identity
@@ -28,10 +29,6 @@ module Tracer
       @transform_inverse_transpose = @transform_inverse.transpose
     end
 
-    def normal_at(world_point : V4) : V4
-      return V4.new 0.0, 0.0, 0.0, 0.0
-    end
-
     def transform : M4x4
       @transform
     end
@@ -47,6 +44,14 @@ module Tracer
 
     def transform_inverse_transpose : M4x4
       @transform_inverse_transpose
+    end
+
+    def normal_at(world_point : V4) : V4
+      return V4.new 0.0, 0.0, 0.0, 0.0
+    end
+
+    def intersections(ray : Ray) : Array(Intersection)
+      return [] of Intersection
     end
   end
 end

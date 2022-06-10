@@ -66,8 +66,7 @@ describe World do
       i = Intersection.new 0.5, s
       ri = RayIntersection.new i, r
       c = w.phong_ray_intersection ri
-      # (c == Color.new(0.90498, 0.90498, 0.90498)).should be_true # <- value before adding shadows
-      (c == (s.material.color * s.material.ambient)).should be_true # <- value after adding shadows
+      (c == Color.new(0.90498, 0.90498, 0.90498)).should be_true
     end
   end
 

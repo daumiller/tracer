@@ -25,7 +25,7 @@ module Tracer
     def intersections(ray : Ray) : Array(Intersection)
       total_intersections = [] of Intersection
       @solids.each do |solid|
-        total_intersections += ray.intersections solid
+        total_intersections += solid.intersections ray
       end
 
       total_intersections.sort { |a, b| a.distance <=> b.distance }
@@ -35,7 +35,7 @@ module Tracer
       color = Color.new 0.0, 0.0, 0.0
       @lights.each do |light|
         in_shadow = self.in_shadow ri.pos_nudge, light
-        color += Tracer.phong ri.solid.material, light, ri.position, ri.eye_v, ri.normal_v, in_shadow
+        color += Tracer.phong ri.solid.material, ri.color, light, ri.position, ri.eye_v, ri.normal_v, in_shadow
       end
       color
     end

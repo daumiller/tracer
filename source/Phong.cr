@@ -4,11 +4,12 @@ require "./Light"
 require "./V4"
 
 module Tracer
-  def self.phong(material : Material, light : Light, position : Point, eye_v : Vector, normal_v : Vector, in_shadow : Bool = false) : Color
+  def self.phong(material : Material, color : Color|Nil, light : Light, position : Point, eye_v : Vector, normal_v : Vector, in_shadow : Bool = false) : Color
     light_vector     : Vector  = Vector.from((light.position - position).normalize)
     light_dot_normal : Float64 = light_vector.dot normal_v
 
-    effective_color : Color = material.color.blend light.color
+    surface_color = color.nil? ? material.color : color;
+    effective_color : Color = surface_color.blend light.color
     ambient_color   : Color = effective_color * material.ambient
     return ambient_color if in_shadow
 

@@ -1,4 +1,4 @@
-# crystal spec tests/Canvas_spec.cr -v --error-trace --link-flags $(pwd)/stb_image_write.a
+# crystal spec tests/Canvas_spec.cr -v --error-trace --link-flags $(pwd)/stb_image.a
 require "spec"
 require "../source/Tracer"
 

@@ -6,9 +6,10 @@ require "./Ray"
 module Tracer
   class Intersection
     property distance : Float64
-    property solid : Solid
+    property solid    : Solid
+    property color    : Color|Nil
 
-    def initialize(@distance : Float64, @solid : Solid)
+    def initialize(@distance : Float64, @solid : Solid, @color : Color|Nil = nil)
     end
 
     def self.hit(intersections : Array(Intersection)) : Intersection|Nil
@@ -31,6 +32,7 @@ module Tracer
   class RayIntersection
     property distance  : Float64
     property solid     : Solid
+    property color     : Color|Nil
     property position  : Point
     property eye_v     : Vector
     property normal_v  : Vector
@@ -40,10 +42,15 @@ module Tracer
     def initialize(intersection : Intersection, ray : Ray)
       @distance  = intersection.distance
       @solid     = intersection.solid
+      @color     = intersection.color
       @position  = Point.from(ray.position(@distance))
-      @eye_v     = Vector.from(-ray.direction)
+      @eye_v     = Vector.from((-ray.direction).normalize)
       @normal_v  = Vector.from(@solid.normal_at(@position))
-      @pos_nudge = Point.from(@position + (@normal_v * EPSILON))
+
+      # Basing nudge on normal_v, as suggested in-book,
+      # results in Planes requiring a specific orientation, otherwise they'll always be in-shadow.
+      # Using eye_direction (instead of normal_direction), seems to solve this fine.
+      @pos_nudge = Point.from(@position + (@eye_v * EPSILON))
 
       if @normal_v.dot(@eye_v) < 0
         @inside = true

@@ -19,7 +19,7 @@ describe Ray do
       # through center (2 intersections)
       ray = Ray.new(Point.new(0.0, 0.0, -5.0), Vector.new(0.0, 0.0, 1.0))
       sphere = Sphere.new
-      xs = ray.intersections(sphere)
+      xs = sphere.intersections ray
       xs.size.should eq(2)
       xs[0].distance.should be_close(4.0, EPSILON)
       xs[1].distance.should be_close(6.0, EPSILON)
@@ -28,26 +28,26 @@ describe Ray do
 
       # through top point (single intersection, reported twice)
       ray = Ray.new(Point.new(0.0, 1.0, -5.0), Vector.new(0.0, 0.0, 1.0))
-      xs = ray.intersections(sphere)
+      xs = sphere.intersections ray
       xs.size.should eq(2)
       xs[0].distance.should be_close(5.0, EPSILON)
       xs[1].distance.should be_close(5.0, EPSILON)
 
       # missed sphere (0 intersections)
       ray = Ray.new(Point.new(0.0, 2.0, -5.0), Vector.new(0.0, 0.0, 1.0))
-      xs = ray.intersections(sphere)
+      xs = sphere.intersections ray
       xs.size.should eq(0)
 
       # inside sphere (1 intersection behind, 1 intersection in front)
       ray = Ray.new(Point.new(0.0, 0.0, 0.0), Vector.new(0.0, 0.0, 1.0))
-      xs = ray.intersections(sphere)
+      xs = sphere.intersections ray
       xs.size.should eq(2)
       xs[0].distance.should be_close(-1.0, EPSILON)
       xs[1].distance.should be_close( 1.0, EPSILON)
 
       # beyond sphere (2 intersections behind)
       ray = Ray.new(Point.new(0.0, 0.0, 5.0), Vector.new(0.0, 0.0, 1.0))
-      xs = ray.intersections(sphere)
+      xs = sphere.intersections ray
       xs.size.should eq(2)
       xs[0].distance.should be_close(-6.0, EPSILON)
       xs[1].distance.should be_close(-4.0, EPSILON)
@@ -56,7 +56,7 @@ describe Ray do
     it "intersects spheres with transforms" do
       ray = Ray.new(Point.new(0.0, 0.0, -5.0), Vector.new(0.0, 0.0, 1.0))
       sphere = Sphere.new M4x4.scale(2.0, 2.0, 2.0)
-      xs = ray.intersections sphere
+      xs = sphere.intersections ray
       xs.size.should eq(2)
       xs[0].distance.should be_close(3.0, EPSILON)
       xs[1].distance.should be_close(7.0, EPSILON)
@@ -64,7 +64,7 @@ describe Ray do
       xs[1].solid.should be(sphere)
   
       sphere.transform = M4x4.translation 5.0, 0.0, 0.0
-      xs = ray.intersections sphere
+      xs = sphere.intersections ray
       xs.size.should eq(0)
     end
 
